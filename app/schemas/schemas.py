@@ -1,29 +1,27 @@
 from pydantic import BaseModel
 from datetime import datetime
 
-class PatientBase(BaseModel):
+# ✅ Schema for Creating a New Patient
+class PatientCreate(BaseModel):
     name: str
     age: int
     phone: str
 
-class PatientCreate(PatientBase):
-    pass
-
-class Patient(PatientBase):
+# ✅ Schema for Returning Patient Data (Includes ID)
+class PatientResponse(PatientCreate):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True  # Pydantic v2 replacement for orm_mode
 
-class AppointmentBase(BaseModel):
+# ✅ Schema for Creating a New Appointment
+class AppointmentCreate(BaseModel):
     patient_id: int
     date_time: datetime
 
-class AppointmentCreate(AppointmentBase):
-    pass
-
-class Appointment(AppointmentBase):
+# ✅ Schema for Returning Appointment Data (Fixing Missing 'Appointment')
+class AppointmentResponse(AppointmentCreate):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True  # Pydantic v2 replacement for orm_mode
